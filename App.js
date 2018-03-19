@@ -1,5 +1,5 @@
 import React from 'react'
-import {StyleSheet, Text, FlatList, View} from 'react-native'
+import {StyleSheet, Text, FlatList, View, TouchableHighlight} from 'react-native'
 import * as firebase from 'firebase'
 
 
@@ -11,7 +11,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 export default class App extends React.Component {
   state = {
-    meetings: []
+    meetings: [],
+    selectedMeeting: null
   }
 
   componentWillMount() {
@@ -19,13 +20,13 @@ export default class App extends React.Component {
       let meetings = []
       let teamId = null
       let meeting = {}
-      snap.forEach(meeting => {
-        const {team, members, step} = meeting.val()
-        teamId = team
-        meeting.key = teamId
-        meeting.members = members
-        meeting.step = step
-        firebase.database().ref().child(`teams/${teamId}`).once('value', snap => {
+      let i = 0
+      snap.forEach(m => {
+        meeting = m.val()
+        meeting.key = meeting.timestamp
+        meeting.id = Object.keys(snap.val())[i]
+        i++
+        firebase.database().ref().child(`teams/${meeting.team}`).once('value', snap => {
           const {name} = snap.val()
           meeting.teamName = name
           meetings.push(meeting)
@@ -36,14 +37,53 @@ export default class App extends React.Component {
     })
   }
 
+  _selectMeeting = meeting => {
+    this.setState({selectedMeeting: meeting})
+  }
+
+  _nextStep = meeting => {
+    let nextStep = meeting.step + 1
+    firebase.database().ref(`dailyMeetings/${meeting.id}`).set({
+      step: nextStep
+    })
+  }
+
+  _prevStep = meeting => {
+    let nextStep = meeting.step ? meeting.step - 1 : 0
+    firebase.database().ref(`dailyMeetings/${meeting.id}`).set({
+      step: nextStep
+    })
+  }
+
   render() {
-    const {meetings} = this.state
+    const {meetings, selectedMeeting} = this.state
+    console.log(selectedMeeting)
     return (
       <View style={styles.container}>
         <FlatList
           data={meetings}
-          renderItem={({item}) => <Text>{item.teamName}</Text>}
+          renderItem={
+            ({item}) => {
+              return (
+                <TouchableHighlight onPress={() => this._selectMeeting(item)}>
+                  <Text style={styles.item}>{item.teamName}</Text>
+                </TouchableHighlight>
+              )
+            }
+          }
         />
+        {
+          selectedMeeting && 
+          <View style={styles.container}>
+            <Text>{selectedMeeting.teamName}</Text>
+            <TouchableHighlight onPress={() => this._nextStep(selectedMeeting)}>
+              <Text>Next Slide</Text>
+            </TouchableHighlight>
+            <TouchableHighlight onPress={() => this._prevStep(selectedMeeting)}>
+              <Text>Previous Slide</Text>
+            </TouchableHighlight>
+          </View>
+        }
       </View>
     )
   }
