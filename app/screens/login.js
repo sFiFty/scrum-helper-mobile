@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 import firebase from 'firebase'
 import {View, StyleSheet} from 'react-native'
 import FacebookButton from '../components/facebookButton'
+import GoogleButton from '../components/googleButton'
 
 export default class Login extends Component {
 
@@ -28,6 +29,7 @@ export default class Login extends Component {
     return (
       <View style={styles.container} >
         <FacebookButton onPress={this.login}/>
+        <GoogleButton onPress={this.login} />
       </View>
     )
   }
