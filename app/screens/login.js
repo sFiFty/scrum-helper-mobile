@@ -15,7 +15,7 @@ export default class Login extends Component {
 
   googleAuthenticate = token => {
     const credential = firebase.auth.GoogleAuthProvider.credential(token)
-    firebase.auth().signInWithCredential(credential)
+    return firebase.auth().signInWithCredential(credential)
   }
 
   loginWithFacebook = async () => {
@@ -26,7 +26,9 @@ export default class Login extends Component {
     const {type, token} = await Exponent.Facebook.logInWithReadPermissionsAsync(ADD_ID, options)
     if (type === 'success') {
       const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`)
-      this.facebookAuthenticate(token)
+      const userData = await response.json()
+      const {uid} = await this.facebookAuthenticate(token)
+      this.createUser(uid, userData)
     }
   }
 
@@ -36,15 +38,20 @@ export default class Login extends Component {
     const options = {
       scopes: ['profile', 'email']
     }
-    const {idToken, type} = await Expo.Google.logInAsync({
+    const {idToken, type, user} = await Expo.Google.logInAsync({
       iosClientId: IOS_CLIENT_ID,
       androidClientId: ANDROID_CLIENT_ID,
       options
     })
     
     if (type === 'success') {
-      this.googleAuthenticate(idToken)
+      const {uid} = await this.googleAuthenticate(idToken)
+      this.createUser(uid, user)
     }
+  }
+
+  createUser = (uid, userData) => {
+    firebase.database().ref('users').child(uid).update(userData)
   }
 
   render() {
