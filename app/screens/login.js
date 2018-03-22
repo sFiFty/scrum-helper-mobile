@@ -1,11 +1,38 @@
 import Exponent from 'expo'
 import React, {Component} from 'react'
 import firebase from 'firebase'
+import {NavigationActions} from 'react-navigation'
 import {View, StyleSheet} from 'react-native'
 import FacebookButton from '../components/facebookButton'
 import GoogleButton from '../components/googleButton'
 
 export default class Login extends Component {
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(auth => {
+      if (auth) {
+        this.firebaseRef = firebase.database().ref('users')
+        this.firebaseRef.child(auth.uid).on('value', snap => {
+          const user = snap.val()
+          if (user != null) {
+            this.firebaseRef.child('users').off('value')
+            this.goHome(user)
+          }
+        })
+        this.props.navigation.navigate('Home')
+      }
+    })
+  }
+
+  goHome = user => {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({routeName: 'Home', params:{user}}),
+      ],
+    })
+    this.props.navigation.dispatch(resetAction)
+  }
 
   facebookAuthenticate = token => {
     const provider = firebase.auth.FacebookAuthProvider
@@ -51,7 +78,7 @@ export default class Login extends Component {
   }
 
   createUser = (uid, userData) => {
-    firebase.database().ref('users').child(uid).update(userData)
+    firebase.database().ref('users').child(uid).update({...userData, uid: uid})
   }
 
   render() {
