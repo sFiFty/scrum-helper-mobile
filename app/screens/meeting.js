@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native'
 import * as firebase from 'firebase'
-import {MaterialIcons} from '@expo/vector-icons'
-import StepIndicator from 'react-native-step-indicator';
+import {MaterialIcons, FontAwesome} from '@expo/vector-icons'
+import StepIndicator from 'react-native-step-indicator'
+import {NavigationActions} from 'react-navigation'
 
 export default class Meeting extends Component {
 
@@ -19,6 +20,16 @@ export default class Meeting extends Component {
     })
   }
 
+  goHome = user => {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({routeName: 'Home'}),
+      ],
+    })
+    this.props.navigation.dispatch(resetAction)
+  }
+
   _prevStep = meeting => {
     meeting.step = meeting.step ? meeting.step - 1 : 0
     firebase.database().ref(`dailyMeetings/${meeting.key}`).update({
@@ -28,14 +39,22 @@ export default class Meeting extends Component {
     })
   }
 
+  _deleteMeeting = meeting => {
+    meeting.step = meeting.step ? meeting.step - 1 : 0
+    firebase.database().ref(`dailyMeetings/${meeting.key}`).remove().then(() => {
+      this.goHome()
+    })
+  }
+
   render() {
     const {meeting} = this.state
+    const isLast = meeting.step === 3
     return (
       <View style={styles.container}>
         <View style={styles.meetingContainer}>
           <View style={styles.info}>
             <Text style={styles.teamName}>{meeting.teamName} Daily Meeting</Text>
-            <StepIndicator customStyles={stepStyles} currentPosition={meeting.step} /> 
+            <StepIndicator stepCount={4} customStyles={stepStyles} currentPosition={meeting.step} /> 
           </View>
           <View style={styles.buttonsContainer}>
             <TouchableHighlight style={styles.button} onPress={() => this._prevStep(meeting)}>
@@ -44,12 +63,24 @@ export default class Meeting extends Component {
                 <Text style={styles.buttonPrevText}>Previous</Text>
               </View>
             </TouchableHighlight> 
-            <TouchableHighlight style={styles.button} onPress={() => this._nextStep(meeting)}>   
-              <View style={styles.buttonContainer}>
-                <Text style={styles.buttonNextText}>Next</Text>
-                <MaterialIcons name={'navigate-next'} size={20} color={'white'} />
-              </View>
-            </TouchableHighlight>   
+             
+             {
+              meeting.step === 3 ?
+              <TouchableHighlight style={styles.buttonFinish} onPress={() => this._deleteMeeting(meeting)}>  
+                <View style={styles.buttonContainer}>
+                  <Text style={styles.buttonNextTextFinish}>Finish</Text>
+                  <FontAwesome name={'remove'} size={20} color={'red'} />
+                </View> 
+              </TouchableHighlight>  :
+              <TouchableHighlight style={styles.button} onPress={() => this._nextStep(meeting)}> 
+                <View style={styles.buttonContainer}>
+                  <Text style={styles.buttonNextText}>Next</Text>
+                  <MaterialIcons name={'navigate-next'} size={20} color={'white'} /> 
+                </View>
+              </TouchableHighlight> 
+             }
+
+             
           </View>
         </View>
       </View>
@@ -99,6 +130,15 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5
   },
+  buttonFinish: {
+    width: 150,
+    height: 50,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    marginBottom: 5,
+    marginLeft: 5,
+    marginRight: 5
+  },
   buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'center'
@@ -108,6 +148,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  buttonNextTextFinish: {
+    color: 'red',
+    fontSize: 15,
+    marginRight: 5
   },
   buttonNextText: {
     color: 'white',
