@@ -2,12 +2,14 @@ import Exponent from 'expo'
 import React, {Component} from 'react'
 import firebase from 'firebase'
 import {NavigationActions} from 'react-navigation'
-import {View, StyleSheet} from 'react-native'
+import {View, StyleSheet, ActivityIndicator} from 'react-native'
 import FacebookButton from '../components/facebookButton'
 import GoogleButton from '../components/googleButton'
 
 export default class Login extends Component {
-
+  state = {
+    isLoading: true
+  }
   componentDidMount() {
     firebase.auth().onAuthStateChanged(auth => {
       if (auth) {
@@ -17,9 +19,12 @@ export default class Login extends Component {
           if (user != null) {
             this.firebaseRef.child('users').off('value')
             this.goHome(user)
+          } else {
+            this.setState({isLoading: false})
           }
-        })
-        this.props.navigation.navigate('Home')
+        }) 
+      } else {
+        this.setState({isLoading: false})
       }
     })
   }
@@ -46,6 +51,7 @@ export default class Login extends Component {
   }
 
   loginWithFacebook = async () => {
+    this.setState({isLoading: true})
     const ADD_ID = '960367194110449'
     const options = {
       permissions: ['public_profile', 'email']
@@ -60,6 +66,7 @@ export default class Login extends Component {
   }
 
   loginWithGoogle = async () => {
+    this.setState({isLoading: true})
     const IOS_CLIENT_ID = '1094907620636-ku81k804klvu49nkhu40no9q3kq40s8h.apps.googleusercontent.com'
     const ANDROID_CLIENT_ID = '1094907620636-2nc24g8a0osf6bm6npms6arapqdpe721.apps.googleusercontent.com'
     const options = {
@@ -82,10 +89,17 @@ export default class Login extends Component {
   }
 
   render() {
+    const {isLoading} = this.state
     return (
       <View style={styles.container} >
-        <FacebookButton onPress={this.loginWithFacebook}/>
-        <GoogleButton onPress={this.loginWithGoogle} />
+        {
+          isLoading ? 
+          <ActivityIndicator animating={isLoading} /> :
+          <View>
+            <FacebookButton onPress={this.loginWithFacebook}/>
+            <GoogleButton onPress={this.loginWithGoogle} />
+          </View>
+        }
       </View>
     )
   }
