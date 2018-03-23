@@ -59,7 +59,7 @@ export default class Meeting extends Component {
           <View style={styles.buttonsContainer}>
             <TouchableHighlight style={styles.button} onPress={() => this._prevStep(meeting)}>
               <View style={styles.buttonContainer}>
-                <MaterialIcons name={'navigate-before'} size={20} color={'white'} />
+                <MaterialIcons name={'navigate-before'} size={20} color={'black'} />
                 <Text style={styles.buttonPrevText}>Previous</Text>
               </View>
             </TouchableHighlight> 
@@ -75,12 +75,10 @@ export default class Meeting extends Component {
               <TouchableHighlight style={styles.button} onPress={() => this._nextStep(meeting)}> 
                 <View style={styles.buttonContainer}>
                   <Text style={styles.buttonNextText}>Next</Text>
-                  <MaterialIcons name={'navigate-next'} size={20} color={'white'} /> 
+                  <MaterialIcons name={'navigate-next'} size={20} color={'black'} /> 
                 </View>
               </TouchableHighlight> 
              }
-
-             
           </View>
         </View>
       </View>
@@ -124,11 +122,13 @@ const styles = StyleSheet.create({
   button: {
     width: 150,
     height: 50,
-    backgroundColor: '#1b1c1d',
+    backgroundColor: 'white',
     borderRadius: 5,
     marginBottom: 5,
     marginLeft: 5,
-    marginRight: 5
+    marginRight: 5,
+    borderWidth: 0.5,
+    borderColor: '#1b1c1d',
   },
   buttonFinish: {
     width: 150,
@@ -137,7 +137,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 5,
     marginLeft: 5,
-    marginRight: 5
+    marginRight: 5,
+    borderWidth: 0.5,
+    borderColor: 'red',
   },
   buttonsContainer: {
     flexDirection: 'row',
@@ -155,12 +157,12 @@ const styles = StyleSheet.create({
     marginRight: 5
   },
   buttonNextText: {
-    color: 'white',
+    color: 'black',
     fontSize: 15,
     marginRight: 5
   },
   buttonPrevText: {
-    color: 'white',
+    color: 'black',
     fontSize: 15,
     marginLeft: 5
   }
