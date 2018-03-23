@@ -5,7 +5,6 @@ import * as firebase from 'firebase'
 export default class Home extends Component {
   state = {
     meetings: [],
-    selectedMeeting: null,
     user: null //this.props.navigation.state.params.user
   }
 
@@ -45,26 +44,8 @@ export default class Home extends Component {
     this.setState({selectedMeeting: meeting})
   }
 
-  _nextStep = meeting => {
-    meeting.step = meeting.step + 1
-    firebase.database().ref(`dailyMeetings/${meeting.key}`).update({
-      step: meeting.step
-    }).then(() => {
-      this.setState({selectedMeeting: meeting})
-    })
-  }
-
-  _prevStep = meeting => {
-    meeting.step = meeting.step ? meeting.step - 1 : 0
-    firebase.database().ref(`dailyMeetings/${meeting.key}`).update({
-      step: meeting.step 
-    }).then(() => {
-      this.setState({selectedMeeting: meeting})
-    })
-  }
-
   render() {
-    const {meetings, selectedMeeting} = this.state
+    const {meetings} = this.state
     return (
       <View style={styles.container}>
         <FlatList
@@ -79,18 +60,6 @@ export default class Home extends Component {
             }
           }
         />
-        {
-          selectedMeeting && 
-          <View style={styles.container}>
-            <Text>{selectedMeeting.teamName}</Text>
-            <TouchableHighlight onPress={() => this._nextStep(selectedMeeting)}>
-              <Text>Next Slide</Text>
-            </TouchableHighlight>
-            <TouchableHighlight onPress={() => this._prevStep(selectedMeeting)}>
-              <Text>Previous Slide</Text>
-            </TouchableHighlight>
-          </View>
-        }
       </View>
     )
   }
