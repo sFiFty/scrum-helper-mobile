@@ -18,8 +18,9 @@ export default class Home extends Component {
   }
 
   getTeamName = async (meeting, meetings, last) => {
-    const {name} = await this.getTeamById(meeting.team)
+    const {name, color} = await this.getTeamById(meeting.team)
     meeting.teamName = name
+    meeting.teamColor = color
     meetings.push(meeting)
     if (last) this.setState({meetings: meetings})
   }
@@ -29,6 +30,7 @@ export default class Home extends Component {
       const meetings = snap.val()
       let localMeetings = []
       let teamId = null
+      if (!meetings) return
       Object.keys(meetings).map((key, index) => {
         const meeting = meetings[key]
         meeting.key = key
@@ -58,19 +60,23 @@ export default class Home extends Component {
   render() {
     const {meetings} = this.state
     return (
+      meetings.length > 0 ? 
       <View style={styles.container}>
-        <FlatList
-          data={meetings}
-          renderItem={
-            ({item}) => {
-              return (
-                <TouchableHighlight onPress={() => this.goMeeting(item)}>
-                  <Text style={styles.item}>{item.teamName}</Text>
-                </TouchableHighlight>
-              )
+          <FlatList
+            data={meetings}
+            renderItem={
+              ({item}) => {
+                return (
+                  <TouchableHighlight style={{backgroundColor: item.teamColor, borderRadius: 5, marginLeft: 20, marginTop: 10}} onPress={() => this.goMeeting(item)}>
+                    <Text style={styles.item}>{item.teamName}</Text>
+                  </TouchableHighlight>
+                )
+              }
             }
-          }
-        />
+          />
+      </View> :
+      <View style={styles.emptyListContainer}>
+        <Text style={styles.emptyListText}>Team list is empty</Text>
       </View>
     )
   }
@@ -78,12 +84,24 @@ export default class Home extends Component {
 
 const styles = StyleSheet.create({
   container: {
-   flex: 1,
-   paddingTop: 22
+    flex: 1,
+    paddingTop: 40,
+    alignItems: 'flex-start',
+    justifyContent: 'center'
+  },
+  emptyListContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  emptyListText: {
+    fontSize: 25
   },
   item: {
     padding: 10,
     fontSize: 18,
     height: 44,
+    marginLeft: 20,
+    marginTop: 5
   },
 })
