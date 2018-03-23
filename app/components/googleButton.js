@@ -7,7 +7,7 @@ export default class FacebookButton extends Component {
     return (
       <TouchableHighlight style={styles.button} onPress={this.props.onPress}>
         <View style={styles.buttonContainer}>
-          <FontAwesome name={'facebook-f'} size={20} color={'white'} />
+          <FontAwesome name={'google-plus'} size={20} color={'white'} />
           <Text style={styles.buttonText}>Login with Google</Text>
         </View>      
       </TouchableHighlight>
@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
     height: 40,
     width: 220,
     backgroundColor: '#dd4b39',
-    borderRadius: 50
+    borderRadius: 50,
+    marginTop: 5
   },
   buttonContainer: {
     flex: 1,
