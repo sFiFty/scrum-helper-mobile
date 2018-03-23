@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {StyleSheet, Text, FlatList, View, TouchableHighlight} from 'react-native'
+import {NavigationActions} from 'react-navigation'
 import * as firebase from 'firebase'
 
 export default class Home extends Component {
@@ -36,6 +37,16 @@ export default class Home extends Component {
     })
   }
 
+  goMeeting = meeting => {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({routeName: 'Meeting', params:{meeting}}),
+      ],
+    })
+    this.props.navigation.dispatch(resetAction)
+  }
+
   componentDidMount() {
     this.getMeetings()
   }
@@ -53,7 +64,7 @@ export default class Home extends Component {
           renderItem={
             ({item}) => {
               return (
-                <TouchableHighlight onPress={() => this._selectMeeting(item)}>
+                <TouchableHighlight onPress={() => this.goMeeting(item)}>
                   <Text style={styles.item}>{item.teamName}</Text>
                 </TouchableHighlight>
               )

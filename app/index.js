@@ -2,6 +2,7 @@ import {StackNavigator} from 'react-navigation'
 import * as firebase from 'firebase'
 import Home from './screens/home'
 import Login from './screens/login'
+import Meeting from './screens/meeting'
 
 
 const firebaseConfig = {
@@ -13,7 +14,8 @@ firebase.initializeApp(firebaseConfig)
 
 const RouteConfig = {
   Login: {screen: Login},
-  Home: {screen: Home}
+  Home: {screen: Home},
+  Meeting: {screen: Meeting}
 }
 
 const StackNavigatorConfig = {

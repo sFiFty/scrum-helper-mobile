@@ -84,8 +84,8 @@ export default class Login extends Component {
   render() {
     return (
       <View style={styles.container} >
-        <FacebookButton style={styles.button} onPress={this.loginWithFacebook}/>
-        <GoogleButton style={styles.button} onPress={this.loginWithGoogle} />
+        <FacebookButton onPress={this.loginWithFacebook}/>
+        <GoogleButton onPress={this.loginWithGoogle} />
       </View>
     )
   }
