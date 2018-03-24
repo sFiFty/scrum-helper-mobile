@@ -67,8 +67,18 @@ export default class Home extends Component {
             renderItem={
               ({item}) => {
                 return (
-                  <TouchableHighlight style={{backgroundColor: item.teamColor, borderRadius: 5, marginLeft: 20, marginTop: 10}} onPress={() => this.goMeeting(item)}>
-                    <Text style={styles.item}>{item.teamName}</Text>
+                  <TouchableHighlight style={
+                    {
+                      backgroundColor: item.teamColor, 
+                      borderRadius: 5, 
+                      width: 200,
+                      height: 50,
+                      marginTop: 10
+                    }} 
+                    onPress={() => this.goMeeting(item)}>
+                      <View style={styles.meetingContainer}>
+                        <Text style={styles.item}>{item.teamName}</Text>
+                      </View>
                   </TouchableHighlight>
                 )
               }
@@ -86,8 +96,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 40,
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'center'
+  },
+  meetingContainer: { 
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   emptyListContainer: {
     flex: 1,
@@ -98,10 +114,6 @@ const styles = StyleSheet.create({
     fontSize: 25
   },
   item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-    marginLeft: 20,
-    marginTop: 5
+    fontSize: 18
   },
 })
