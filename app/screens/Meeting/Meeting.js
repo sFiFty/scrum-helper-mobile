@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {StyleSheet, Text, View, TouchableHighlight} from 'react-native'
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native'
 import * as firebase from 'firebase'
 import {MaterialIcons, FontAwesome} from '@expo/vector-icons'
 import StepIndicator from 'react-native-step-indicator'
@@ -46,9 +46,14 @@ export default class Meeting extends Component {
     })
   }
 
+  buttonStyle = step => {
+    console.log(step)
+    if (step === 0) return [styles.button, styles.buttonDisabled]
+    return styles.button
+  }
+
   render() {
     const {meeting} = this.state
-    const isLast = meeting.step === 3
     return (
       <View style={styles.container}>
         <View style={styles.meetingContainer}>
@@ -57,28 +62,43 @@ export default class Meeting extends Component {
             <StepIndicator stepCount={4} customStyles={stepStyles} currentPosition={meeting.step} /> 
           </View>
           <View style={styles.buttonsContainer}>
-            <TouchableHighlight underlayColor="rgba(0, 0, 0, 0)" style={styles.button} onPress={() => this._prevStep(meeting)}>
-              <View style={styles.buttonContainer}>
-                <MaterialIcons name={'navigate-before'} size={20} color={'black'} />
-                <Text style={styles.buttonPrevText}>Previous</Text>
-              </View>
-            </TouchableHighlight> 
-             
-             {
-              meeting.step === 3 ?
-              <TouchableHighlight underlayColor="rgba(0, 0, 0, 0)" style={styles.buttonFinish} onPress={() => this._deleteMeeting(meeting)}>  
+            {
+              meeting.step === 0 ?
+              <TouchableOpacity 
+                disabled 
+                underlayColor="rgba(0, 0, 0, 0)" 
+                style={[styles.button, styles.buttonDisabled]} 
+                onPress={() => this._prevStep(meeting)}>
                 <View style={styles.buttonContainer}>
-                  <Text style={styles.buttonNextTextFinish}>Finish</Text>
-                  <FontAwesome name={'remove'} size={20} color={'red'} />
-                </View> 
-              </TouchableHighlight>  :
-              <TouchableHighlight underlayColor="rgba(0, 0, 0, 0)" style={styles.button} onPress={() => this._nextStep(meeting)}> 
-                <View style={styles.buttonContainer}>
-                  <Text style={styles.buttonNextText}>Next</Text>
-                  <MaterialIcons name={'navigate-next'} size={20} color={'black'} /> 
+                  <MaterialIcons name={'navigate-before'} size={20} color={'black'} />
+                  <Text style={styles.buttonPrevText}>Previous</Text>
                 </View>
-              </TouchableHighlight> 
-             }
+              </TouchableOpacity> :
+              <TouchableOpacity 
+                underlayColor="rgba(0, 0, 0, 0)" 
+                style={styles.button} 
+                onPress={() => this._prevStep(meeting)}>
+                <View style={styles.buttonContainer}>
+                  <MaterialIcons name={'navigate-before'} size={20} color={'black'} />
+                  <Text style={styles.buttonPrevText}>Previous</Text>
+                </View>
+              </TouchableOpacity> 
+            }
+            {
+            meeting.step === 3 ?
+            <TouchableOpacity underlayColor="rgba(0, 0, 0, 0)" style={styles.buttonFinish} onPress={() => this._deleteMeeting(meeting)}>  
+              <View style={styles.buttonContainer}>
+                <Text style={styles.buttonNextTextFinish}>Finish</Text>
+                <FontAwesome name={'remove'} size={20} color={'red'} />
+              </View> 
+            </TouchableOpacity>  :
+            <TouchableOpacity underlayColor="rgba(0, 0, 0, 0)" style={styles.button} onPress={() => this._nextStep(meeting)}> 
+              <View style={styles.buttonContainer}>
+                <Text style={styles.buttonNextText}>Next</Text>
+                <MaterialIcons name={'navigate-next'} size={20} color={'black'} /> 
+              </View>
+            </TouchableOpacity> 
+            }
           </View>
         </View>
       </View>
@@ -122,14 +142,16 @@ const styles = StyleSheet.create({
   button: {
     width: 150,
     height: 50,
-    backgroundColor: 'white',
     borderRadius: 5,
     marginBottom: 5,
     marginLeft: 5,
     marginRight: 5,
     borderWidth: 0.5,
     borderColor: '#1b1c1d',
-    opacity: 0.8
+    backgroundColor: 'white'
+  },
+  buttonDisabled: {
+    opacity: 0.3
   },
   buttonFinish: {
     width: 150,
