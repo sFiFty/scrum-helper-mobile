@@ -57,7 +57,7 @@ export default class Meeting extends Component {
             <StepIndicator stepCount={4} customStyles={stepStyles} currentPosition={meeting.step} /> 
           </View>
           <View style={styles.buttonsContainer}>
-            <TouchableHighlight style={styles.button} onPress={() => this._prevStep(meeting)}>
+            <TouchableHighlight underlayColor="rgba(0, 0, 0, 0)" style={styles.button} onPress={() => this._prevStep(meeting)}>
               <View style={styles.buttonContainer}>
                 <MaterialIcons name={'navigate-before'} size={20} color={'black'} />
                 <Text style={styles.buttonPrevText}>Previous</Text>
@@ -66,13 +66,13 @@ export default class Meeting extends Component {
              
              {
               meeting.step === 3 ?
-              <TouchableHighlight style={styles.buttonFinish} onPress={() => this._deleteMeeting(meeting)}>  
+              <TouchableHighlight underlayColor="rgba(0, 0, 0, 0)" style={styles.buttonFinish} onPress={() => this._deleteMeeting(meeting)}>  
                 <View style={styles.buttonContainer}>
                   <Text style={styles.buttonNextTextFinish}>Finish</Text>
                   <FontAwesome name={'remove'} size={20} color={'red'} />
                 </View> 
               </TouchableHighlight>  :
-              <TouchableHighlight style={styles.button} onPress={() => this._nextStep(meeting)}> 
+              <TouchableHighlight underlayColor="rgba(0, 0, 0, 0)" style={styles.button} onPress={() => this._nextStep(meeting)}> 
                 <View style={styles.buttonContainer}>
                   <Text style={styles.buttonNextText}>Next</Text>
                   <MaterialIcons name={'navigate-next'} size={20} color={'black'} /> 
@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
     borderWidth: 0.5,
     borderColor: '#1b1c1d',
+    opacity: 0.8
   },
   buttonFinish: {
     width: 150,

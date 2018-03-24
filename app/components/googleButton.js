@@ -5,7 +5,7 @@ import {FontAwesome} from '@expo/vector-icons'
 export default class FacebookButton extends Component {
   render() {
     return (
-      <TouchableHighlight style={styles.button} onPress={this.props.onPress}>
+      <TouchableHighlight underlayColor="rgba(0, 0, 0, 0)" style={styles.button} onPress={this.props.onPress}>
         <View style={styles.buttonContainer}>
           <FontAwesome name={'google-plus'} size={20} color={'white'} />
           <Text style={styles.buttonText}>Login with Google</Text>
