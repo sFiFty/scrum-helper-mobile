@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
-import {StyleSheet, Text, FlatList, View, TouchableHighlight} from 'react-native'
+import {StyleSheet, Text, FlatList, View, TouchableHighlight, ActivityIndicator} from 'react-native'
 import {NavigationActions} from 'react-navigation'
 import * as firebase from 'firebase'
 
 export default class Home extends Component {
   state = {
-    meetings: [],
+    meetings: null,
     user: null //this.props.navigation.state.params.user
   }
 
@@ -30,7 +30,10 @@ export default class Home extends Component {
       const meetings = snap.val()
       let localMeetings = []
       let teamId = null
-      if (!meetings) return
+      if (!meetings) {
+        this.setState({meetings: localMeetings})
+        return
+      }
       Object.keys(meetings).map((key, index) => {
         const meeting = meetings[key]
         meeting.key = key
@@ -59,7 +62,12 @@ export default class Home extends Component {
 
   render() {
     const {meetings} = this.state
+    
     return (
+      meetings === null ?
+      <View style={styles.emptyListContainer}>
+        <ActivityIndicator /> 
+      </View> :
       meetings.length > 0 ? 
       <View style={styles.container}>
           <FlatList
