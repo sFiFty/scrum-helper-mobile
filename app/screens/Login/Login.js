@@ -3,8 +3,8 @@ import React, {Component} from 'react'
 import firebase from 'firebase'
 import {NavigationActions} from 'react-navigation'
 import {View, StyleSheet, ActivityIndicator} from 'react-native'
-import FacebookButton from '../../components/facebookButton'
-import GoogleButton from '../../components/googleButton'
+import FacebookButton from '../../components/FacebookButton'
+import GoogleButton from '../../components/GoogleButton'
 
 export default class Login extends Component {
   state = {
