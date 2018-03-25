@@ -4,6 +4,7 @@ import * as firebase from 'firebase'
 import {MaterialIcons, FontAwesome, Ionicons} from '@expo/vector-icons'
 import StepIndicator from 'react-native-step-indicator'
 import {NavigationActions} from 'react-navigation'
+import NavTab from '../../components/NavTab'
 
 export default class Meeting extends Component {
 
@@ -57,32 +58,8 @@ export default class Meeting extends Component {
       <View style={{
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'center',
-      }}>
-        <View style={{
-          flexDirection: 'row',
-          alignItems: 'flex-start',
-          borderBottomColor: '#d3d3d3',
-          borderBottomWidth: 1,
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.8,
-          shadowRadius: 2,
-          elevation: 1,
-          height: 60,
-          marginBottom: 'auto',
-          paddingTop: 30
-        }}>
-          <TouchableOpacity onPress={this.goHome}>
-            <View style={styles.buttonContainer}>
-              <Ionicons name={'md-arrow-round-back'} size={20} color={'black'} />
-              <Text style={styles.buttonPrevText}>Back</Text>
-            </View>
-          </TouchableOpacity>
-          <View style={styles.buttonContainer}>
-            <Text>{meeting.teamName} Daily Meeting</Text>
-          </View>
-        </View>
+        justifyContent: 'center'}}>
+        <NavTab label={meeting.teamName + 'Daily Meeting'} />
         <View style={styles.meetingContainer}>
           <View style={styles.info}>
             <StepIndicator stepCount={4} customStyles={stepStyles} currentPosition={meeting.step} /> 
