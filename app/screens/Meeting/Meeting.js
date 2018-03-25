@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native'
 import * as firebase from 'firebase'
-import {MaterialIcons, FontAwesome} from '@expo/vector-icons'
+import {MaterialIcons, FontAwesome, Ionicons} from '@expo/vector-icons'
 import StepIndicator from 'react-native-step-indicator'
 import {NavigationActions} from 'react-navigation'
 
@@ -47,7 +47,6 @@ export default class Meeting extends Component {
   }
 
   buttonStyle = step => {
-    console.log(step)
     if (step === 0) return [styles.button, styles.buttonDisabled]
     return styles.button
   }
@@ -55,35 +54,49 @@ export default class Meeting extends Component {
   render() {
     const {meeting} = this.state
     return (
-      <View style={styles.container}>
+      <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+      }}>
+        <View style={{
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+          borderBottomColor: '#d3d3d3',
+          borderBottomWidth: 1,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.8,
+          shadowRadius: 2,
+          elevation: 1,
+          height: 60,
+          marginBottom: 'auto',
+          paddingTop: 30
+        }}>
+          <TouchableOpacity onPress={this.goHome}>
+            <View style={styles.buttonContainer}>
+              <Ionicons name={'md-arrow-round-back'} size={20} color={'black'} />
+              <Text style={styles.buttonPrevText}>Back</Text>
+            </View>
+          </TouchableOpacity>
+          <View style={styles.buttonContainer}>
+            <Text>{meeting.teamName} Daily Meeting</Text>
+          </View>
+        </View>
         <View style={styles.meetingContainer}>
           <View style={styles.info}>
-            <Text style={styles.teamName}>{meeting.teamName} Daily Meeting</Text>
             <StepIndicator stepCount={4} customStyles={stepStyles} currentPosition={meeting.step} /> 
           </View>
           <View style={styles.buttonsContainer}>
-            {
-              meeting.step === 0 ?
-              <TouchableOpacity 
-                disabled 
-                underlayColor="rgba(0, 0, 0, 0)" 
-                style={[styles.button, styles.buttonDisabled]} 
-                onPress={() => this._prevStep(meeting)}>
-                <View style={styles.buttonContainer}>
-                  <MaterialIcons name={'navigate-before'} size={20} color={'black'} />
-                  <Text style={styles.buttonPrevText}>Previous</Text>
-                </View>
-              </TouchableOpacity> :
-              <TouchableOpacity 
-                underlayColor="rgba(0, 0, 0, 0)" 
-                style={styles.button} 
-                onPress={() => this._prevStep(meeting)}>
-                <View style={styles.buttonContainer}>
-                  <MaterialIcons name={'navigate-before'} size={20} color={'black'} />
-                  <Text style={styles.buttonPrevText}>Previous</Text>
-                </View>
-              </TouchableOpacity> 
-            }
+            <TouchableOpacity 
+              underlayColor="rgba(0, 0, 0, 0)" 
+              style={styles.button} 
+              onPress={() => this._prevStep(meeting)}>
+              <View style={styles.buttonContainer}>
+                <MaterialIcons name={'navigate-before'} size={20} color={'black'} />
+                <Text style={styles.buttonPrevText}>Previous</Text>
+              </View>
+            </TouchableOpacity> 
             {
             meeting.step === 3 ?
             <TouchableOpacity underlayColor="rgba(0, 0, 0, 0)" style={styles.buttonFinish} onPress={() => this._deleteMeeting(meeting)}>  
@@ -119,15 +132,12 @@ const stepStyles = {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
   meetingContainer: {
     height: 200,
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+    marginBottom: 'auto'
   },
   info: {
     height: 50,
