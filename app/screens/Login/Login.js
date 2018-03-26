@@ -68,16 +68,16 @@ export default class Login extends Component {
   loginWithGoogle = async () => {
     this.setState({isLoading: true})
     const IOS_CLIENT_ID = '1094907620636-ku81k804klvu49nkhu40no9q3kq40s8h.apps.googleusercontent.com'
-    const ANDROID_CLIENT_ID = '1094907620636-2nc24g8a0osf6bm6npms6arapqdpe721.apps.googleusercontent.com'
+    const ANDROID_CLIENT_ID = '1094907620636-ku81k804klvu49nkhu40no9q3kq40s8h.apps.googleusercontent.com'
     const options = {
-      scopes: ['profile', 'email']
+      scopes: ['email']
     }
     const {idToken, type, user} = await Expo.Google.logInAsync({
       iosClientId: IOS_CLIENT_ID,
       androidClientId: ANDROID_CLIENT_ID,
       options
     })
-    
+
     if (type === 'success') {
       const {uid} = await this.googleAuthenticate(idToken)
       this.createUser(uid, user)
