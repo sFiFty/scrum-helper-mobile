@@ -5,11 +5,12 @@ import {Ionicons} from '@expo/vector-icons'
 
 export default class NavTab extends Component {
   render() {
-    const {label} = this.props
+    const {label, navigate} = this.props
     return (
       <View style={{
         flexDirection: 'row',
-        alignItems: 'flex-start',
+        backgroundColor: 'white',
+        justifyContent: 'space-between',
         borderBottomColor: '#d3d3d3',
         borderBottomWidth: 1,
         shadowColor: '#000',
@@ -17,17 +18,30 @@ export default class NavTab extends Component {
         shadowOpacity: 0.8,
         shadowRadius: 2,
         elevation: 1,
-        height: 60,
+        height: 90,
         marginBottom: 'auto',
-        paddingTop: 30}}>
-        <TouchableOpacity onPress={this.goHome}>
-          <View>
-            <Ionicons name={'md-arrow-round-back'} size={20} color={'black'} />
-            <Text>Back</Text>
+        paddingTop: 40,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20}}>
+        <TouchableOpacity onPress={navigate}>
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <Ionicons name={'md-arrow-round-back'} size={25} color={'black'} />
+            <Text style={{
+              fontSize: 25,
+              marginLeft: 10
+            }}>Back</Text>
           </View>
         </TouchableOpacity>
         <View>
-          <Text>{label}</Text>
+          <Text style={{
+            fontSize: 25,
+            marginRight: 30
+          }}>{label}</Text>
         </View>
       </View>
     )

@@ -59,7 +59,7 @@ export default class Meeting extends Component {
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'center'}}>
-        <NavTab label={meeting.teamName + 'Daily Meeting'} />
+        <NavTab navigate={this.goHome} label={meeting.teamName + ' Daily Meeting'} />
         <View style={styles.meetingContainer}>
           <View style={styles.info}>
             <StepIndicator stepCount={4} customStyles={stepStyles} currentPosition={meeting.step} /> 
