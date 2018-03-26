@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {StyleSheet, Text, FlatList, View, TouchableHighlight, ActivityIndicator} from 'react-native'
 import {NavigationActions} from 'react-navigation'
 import * as firebase from 'firebase'
+import NavTab from '../../components/NavTab'
 
 export default class Home extends Component {
   state = {
@@ -52,17 +53,13 @@ export default class Home extends Component {
     this.props.navigation.dispatch(resetAction)
   }
 
-  componentDidMount() {
-    this.getMeetings()
-  }
+  componentDidMount() { this.getMeetings() }
 
-  _selectMeeting = meeting => {
-    this.setState({selectedMeeting: meeting})
-  }
+  _selectMeeting = meeting => this.setState({selectedMeeting: meeting})
 
   render() {
     const {meetings} = this.state
-    
+
     return (
       meetings === null ?
       <View style={styles.emptyListContainer}>
@@ -70,7 +67,14 @@ export default class Home extends Component {
       </View> :
       meetings.length > 0 ? 
       <View style={styles.container}>
+        <NavTab label={'Meetings'} />
+        <View style={{
+          marginBottom: 'auto'
+        }}>
           <FlatList
+            style={{
+              alignSelf: 'center'
+            }}
             data={meetings}
             renderItem={
               ({item}) => {
@@ -92,6 +96,7 @@ export default class Home extends Component {
               }
             }
           />
+        </View>
       </View> :
       <View style={styles.emptyListContainer}>
         <Text style={styles.emptyListText}>Team list is empty</Text>
@@ -103,8 +108,6 @@ export default class Home extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 40,
-    alignItems: 'center',
     justifyContent: 'center'
   },
   meetingContainer: { 

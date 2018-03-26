@@ -76,7 +76,9 @@ export default class Meeting extends Component {
             </TouchableOpacity> 
             {
             meeting.step === 3 ?
-            <TouchableOpacity underlayColor="rgba(0, 0, 0, 0)" style={styles.buttonFinish} onPress={() => this._deleteMeeting(meeting)}>  
+            <TouchableOpacity 
+              underlayColor="rgba(0, 0, 0, 0)" 
+              style={styles.buttonFinish} onPress={() => this._deleteMeeting(meeting)}>  
               <View style={styles.buttonContainer}>
                 <Text style={styles.buttonNextTextFinish}>Finish</Text>
                 <FontAwesome name={'remove'} size={20} color={'red'} />
@@ -110,7 +112,7 @@ const stepStyles = {
 
 const styles = StyleSheet.create({
   meetingContainer: {
-    height: 200,
+    height: 100,
     alignItems: 'center',
     justifyContent: 'space-between',
     alignSelf: 'center',
@@ -152,6 +154,7 @@ const styles = StyleSheet.create({
     borderColor: 'red',
   },
   buttonsContainer: {
+    marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'center'
   },
