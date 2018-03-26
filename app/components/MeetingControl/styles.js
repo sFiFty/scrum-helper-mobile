@@ -12,10 +12,11 @@ export default StyleSheet.create({
     borderColor: '#1b1c1d',
     backgroundColor: 'white'
   },
-  buttonsContainer: {
-    marginTop: 10,
+  buttonContainer: {
+    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonNextText: {
     color: 'black',
@@ -26,5 +27,21 @@ export default StyleSheet.create({
     color: 'black',
     fontSize: 15,
     marginLeft: 5
+  },
+  buttonFinish: {
+    width: 150,
+    height: 50,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    marginBottom: 5,
+    marginLeft: 5,
+    marginRight: 5,
+    borderWidth: 0.5,
+    borderColor: 'red',
+  },
+  buttonNextTextFinish: {
+    color: 'red',
+    fontSize: 15,
+    marginRight: 5
   }
 })

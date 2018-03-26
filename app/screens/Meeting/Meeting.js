@@ -5,6 +5,7 @@ import {MaterialIcons, FontAwesome, Ionicons} from '@expo/vector-icons'
 import StepIndicator from 'react-native-step-indicator'
 import {NavigationActions} from 'react-navigation'
 import NavTab from '../../components/NavTab'
+import MeetingControl from '../../components/MeetingControl'
 
 export default class Meeting extends Component {
 
@@ -65,31 +66,11 @@ export default class Meeting extends Component {
             <StepIndicator stepCount={4} customStyles={stepStyles} currentPosition={meeting.step} /> 
           </View>
           <View style={styles.buttonsContainer}>
-            <TouchableOpacity 
-              underlayColor="rgba(0, 0, 0, 0)" 
-              style={styles.button} 
-              onPress={() => this._prevStep(meeting)}>
-              <View style={styles.buttonContainer}>
-                <MaterialIcons name={'navigate-before'} size={20} color={'black'} />
-                <Text style={styles.buttonPrevText}>Previous</Text>
-              </View>
-            </TouchableOpacity> 
+            <MeetingControl action={() => this._prevStep(meeting)} type={'previous'} />
             {
-            meeting.step === 3 ?
-            <TouchableOpacity 
-              underlayColor="rgba(0, 0, 0, 0)" 
-              style={styles.buttonFinish} onPress={() => this._deleteMeeting(meeting)}>  
-              <View style={styles.buttonContainer}>
-                <Text style={styles.buttonNextTextFinish}>Finish</Text>
-                <FontAwesome name={'remove'} size={20} color={'red'} />
-              </View> 
-            </TouchableOpacity>  :
-            <TouchableOpacity underlayColor="rgba(0, 0, 0, 0)" style={styles.button} onPress={() => this._nextStep(meeting)}> 
-              <View style={styles.buttonContainer}>
-                <Text style={styles.buttonNextText}>Next</Text>
-                <MaterialIcons name={'navigate-next'} size={20} color={'black'} /> 
-              </View>
-            </TouchableOpacity> 
+              meeting.step === 3 ?
+              <MeetingControl action={() => this._deleteMeeting(meeting)} type={'finish'} /> :
+              <MeetingControl action={() => this._nextStep(meeting)} type={'next'} />
             }
           </View>
         </View>
@@ -128,30 +109,12 @@ const styles = StyleSheet.create({
     width: 200,
     textAlign: 'center'
   },
-  
+  buttonsContainer: {
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
   buttonDisabled: {
     opacity: 0.3
-  },
-  buttonFinish: {
-    width: 150,
-    height: 50,
-    backgroundColor: 'white',
-    borderRadius: 5,
-    marginBottom: 5,
-    marginLeft: 5,
-    marginRight: 5,
-    borderWidth: 0.5,
-    borderColor: 'red',
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonNextTextFinish: {
-    color: 'red',
-    fontSize: 15,
-    marginRight: 5
   }
 })
