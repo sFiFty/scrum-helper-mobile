@@ -128,17 +128,7 @@ const styles = StyleSheet.create({
     width: 200,
     textAlign: 'center'
   },
-  button: {
-    width: 150,
-    height: 50,
-    borderRadius: 5,
-    marginBottom: 5,
-    marginLeft: 5,
-    marginRight: 5,
-    borderWidth: 0.5,
-    borderColor: '#1b1c1d',
-    backgroundColor: 'white'
-  },
+  
   buttonDisabled: {
     opacity: 0.3
   },
@@ -153,11 +143,6 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: 'red',
   },
-  buttonsContainer: {
-    marginTop: 10,
-    flexDirection: 'row',
-    justifyContent: 'center'
-  },
   buttonContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -168,15 +153,5 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 15,
     marginRight: 5
-  },
-  buttonNextText: {
-    color: 'black',
-    fontSize: 15,
-    marginRight: 5
-  },
-  buttonPrevText: {
-    color: 'black',
-    fontSize: 15,
-    marginLeft: 5
   }
 })
